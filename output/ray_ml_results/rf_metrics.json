@@ -1,7 +1,19 @@
 {
-  "accuracy": 0.7908354730396998,
+  "accuracy": 0.8364605964842978,
   "n_train": 20251,
   "n_test": 5063,
-  "positive_rate_train": 0.3252185077280134,
-  "positive_rate_test": 0.3251036934623741
+  "positive_rate_train": 0.1606834230408375,
+  "positive_rate_test": 0.16057673316215682,
+  "median_usage": 41.25,
+  "median_trust": 58.333333333333336,
+  "predictors": [
+    "UsageFreq",
+    "AgentDepth",
+    "AIModelCount",
+    "WorkflowIntegration",
+    "ProblemCount",
+    "ThreatLevel",
+    "DevEnvToolCount",
+    "WorkExpNum"
+  ]
 }

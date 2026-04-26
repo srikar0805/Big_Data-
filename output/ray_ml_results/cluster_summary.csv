@@ -1,5 +1,5 @@
-Cluster,UsageScore,TrustScore,SentimentScore,ComplexityScore,FrustrationScore,AgentAdoptionScore,AIModelCount,DevEnvToolCount,WorkExpNum,DeveloperCount
-0,4.492,3.669,4.34,3.597,1.162,2.038,0.979,1.998,15.162,8861
-1,2.217,1.663,2.179,1.585,1.461,0.563,0.462,2.072,15.338,4321
-2,4.847,3.471,4.463,3.431,1.939,3.519,5.388,5.355,11.952,4811
-3,4.436,2.206,3.628,1.857,2.126,1.642,1.853,3.166,11.394,7321
+Cluster,UsageScore,TrustScore,FrustrationScore,UsageFreq,AgentDepth,AIModelCount,WorkflowIntegration,ProblemCount,ThreatLevel,DevEnvToolCount,WorkExpNum,DeveloperCount
+0,67.763,67.436,24.795,4.879,3.785,4.638,5.239,1.794,0.137,4.714,12.524,5287
+1,46.348,57.837,60.381,4.554,2.203,1.995,3.035,2.026,0.802,2.903,12.278,5270
+2,39.224,57.231,17.08,4.524,1.568,1.315,2.19,1.417,0.058,2.527,13.937,9571
+3,16.912,26.109,21.999,2.331,0.542,0.489,0.531,1.501,0.14,2.158,14.892,5186

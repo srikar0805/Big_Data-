@@ -1,11 +1,11 @@
 Setting default log level to "WARN".
 To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-26/04/26 16:47:05 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
-[Stage 0:>                                                          (0 + 1) / 1]                                                                                [Stage 1:>                                                          (0 + 8) / 8]                                                                                project root: /users/sk7dn/big_data/AI_Trust_Paradox_Phase2
-T1 row count              PASS  got 49,191
-T2 score columns present  PASS  missing: set()
-T3 ordinal bounds         PASS  {'UsageScore': Row(min(UsageScore)=0, max(UsageScore)=5), 'TrustScore': Row(min(TrustScore)=1, max(TrustScore)=5), 'SentimentScore': Row(min(SentimentScore)=1, max(SentimentScore)=5), 'ComplexityScore': Row(min(ComplexityScore)=1, max(ComplexityScore)=5)}
-T4 SQL query <30s         PASS  0.314s
-T5 output artefacts       PASS  missing: []
+26/04/26 17:20:35 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[Stage 0:>                                                          (0 + 1) / 1]                                                                                [Stage 1:>                                                          (0 + 8) / 8]                                                                                
+T1 row count                     PASS  got 49,191
+T2 score columns present         PASS  missing: set()
+T3 composite-score 0-100 bounds  PASS  {'UsageScore': Row(min(UsageScore)=0.0, max(UsageScore)=100.0), 'TrustScore': Row(min(TrustScore)=0.0, max(TrustScore)=100.0), 'FrustrationScore': Row(min(FrustrationScore)=0.0, max(FrustrationScore)=100.0)}
+T4 SQL query <30s                PASS  0.356s
+T5 output artefacts              PASS  missing: []
 
 ALL TESTS PASSED

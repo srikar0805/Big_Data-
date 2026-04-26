@@ -1,37 +1,30 @@
-#!/usr/bin/env python
-# coding: utf-8
+"""
+Phase 2 — Step 03 — Spark-SQL analytics on the composite scores.
 
-# # Notebook 03 — Spark SQL Analytics
-# 
-# Runs the seven analytical queries that drive the report:
-# 1. Dataset summary
-# 2. AI usage distribution
-# 3. Trust by AI usage
-# 4. Trust by developer role
-# 5. Trust by experience level
-# 6. **AI Trust Paradox quadrant analysis** — the core finding
-# 7. Paradox group profile (role × country × remote)
+Runs the seven analytical queries that drive the report:
+  1. Dataset summary
+  2. AI-usage-frequency distribution
+  3. Trust by AI-usage band  (low/med/high)
+  4. Trust by developer role
+  5. Trust by experience level
+  6. AI Trust Paradox quadrant analysis (split on the **median** of each composite)
+  7. Profile of the paradox group (role × country × remote)
 
-# In[1]:
-
-
-import os, sys
+Reads  : output/cleaned_data/ai_trust_scores
+Writes : output/cleaned_data/ai_trust_quadrants  (parquet)
+         output/spark_sql_results/*              (one CSV per query)
+"""
+import os
 from pathlib import Path
 
 os.environ.setdefault("JAVA_HOME", "/usr/lib/jvm/java-17-openjdk-amd64")
 os.environ["PATH"] = os.environ["JAVA_HOME"] + "/bin:" + os.environ.get("PATH", "")
 
 PROJECT_ROOT = Path("/users/sk7dn/big_data/AI_Trust_Paradox_Phase2")
-DATA_DIR = PROJECT_ROOT / "data"
-OUTPUT_DIR = PROJECT_ROOT / "output"
-print("project root:", PROJECT_ROOT)
-
-
-# In[2]:
-
+OUTPUT_DIR   = PROJECT_ROOT / "output"
 
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import avg, col, when
+from pyspark.sql.functions import col, when
 
 spark = (
     SparkSession.builder
@@ -47,15 +40,18 @@ df_scores = spark.read.parquet(str(OUTPUT_DIR / "cleaned_data" / "ai_trust_score
 df_scores.createOrReplaceTempView("ai_trust")
 print("rows:", df_scores.count())
 
+def save(df, name):
+    df.coalesce(1).write.mode("overwrite").csv(
+        str(OUTPUT_DIR / "spark_sql_results" / name), header=True)
 
-# ## Query 1 — Dataset summary
-
-# In[3]:
-
-
+# -----------------------------------------------------------------------------
+# Query 1 — dataset summary
+# -----------------------------------------------------------------------------
+print("\n=== Q1: dataset summary ===")
 summary = spark.sql("""
 SELECT
     COUNT(*)                           AS TotalResponses,
+    COUNT(TrustScore)                  AS RespondentsWithTrust,
     COUNT(DISTINCT Country)            AS CountryCount,
     COUNT(DISTINCT DevType)            AS DeveloperRoleCount,
     AVG(UsageScore)                    AS AvgUsageScore,
@@ -64,15 +60,12 @@ SELECT
 FROM ai_trust
 """)
 summary.show(truncate=False)
-summary.coalesce(1).write.mode("overwrite").csv(
-    str(OUTPUT_DIR / "spark_sql_results" / "dataset_summary"), header=True)
+save(summary, "dataset_summary")
 
-
-# ## Query 2 — AI usage distribution
-
-# In[4]:
-
-
+# -----------------------------------------------------------------------------
+# Query 2 — AI usage distribution (raw frequency category)
+# -----------------------------------------------------------------------------
+print("\n=== Q2: AI usage distribution ===")
 ai_usage_distribution = spark.sql("""
 SELECT AISelect, COUNT(*) AS DeveloperCount
 FROM ai_trust
@@ -80,37 +73,35 @@ GROUP BY AISelect
 ORDER BY DeveloperCount DESC
 """)
 ai_usage_distribution.show(truncate=False)
-ai_usage_distribution.coalesce(1).write.mode("overwrite").csv(
-    str(OUTPUT_DIR / "spark_sql_results" / "ai_usage_distribution"), header=True)
+save(ai_usage_distribution, "ai_usage_distribution")
 
-
-# ## Query 3 — Trust by AI usage
-
-# In[5]:
-
-
+# -----------------------------------------------------------------------------
+# Query 3 — Trust by AI-usage band (composite)
+# -----------------------------------------------------------------------------
+print("\n=== Q3: Trust by usage band ===")
 trust_by_usage = spark.sql("""
 SELECT
-    AISelect,
-    COUNT(*)                AS DeveloperCount,
-    AVG(TrustScore)         AS AvgTrustScore,
-    AVG(SentimentScore)     AS AvgSentimentScore,
-    AVG(ComplexityScore)    AS AvgComplexityScore,
-    AVG(FrustrationScore)   AS AvgFrustrationScore
+    CASE
+      WHEN UsageScore < 25 THEN 'Low (0-25)'
+      WHEN UsageScore < 50 THEN 'Medium-Low (25-50)'
+      WHEN UsageScore < 75 THEN 'Medium-High (50-75)'
+      ELSE                       'High (75-100)'
+    END                              AS UsageBand,
+    COUNT(*)                         AS DeveloperCount,
+    AVG(UsageScore)                  AS AvgUsageScore,
+    AVG(TrustScore)                  AS AvgTrustScore,
+    AVG(FrustrationScore)            AS AvgFrustrationScore
 FROM ai_trust
-GROUP BY AISelect
-ORDER BY AvgTrustScore DESC
+GROUP BY 1
+ORDER BY AvgUsageScore
 """)
 trust_by_usage.show(truncate=False)
-trust_by_usage.coalesce(1).write.mode("overwrite").csv(
-    str(OUTPUT_DIR / "spark_sql_results" / "trust_by_usage"), header=True)
+save(trust_by_usage, "trust_by_usage")
 
-
-# ## Query 4 — Trust by developer role
-
-# In[6]:
-
-
+# -----------------------------------------------------------------------------
+# Query 4 — Trust by developer role
+# -----------------------------------------------------------------------------
+print("\n=== Q4: Trust by developer role ===")
 trust_by_role = spark.sql("""
 SELECT
     DevType,
@@ -125,25 +116,22 @@ HAVING DeveloperCount >= 100
 ORDER BY AvgTrustScore DESC
 """)
 trust_by_role.show(30, truncate=False)
-trust_by_role.coalesce(1).write.mode("overwrite").csv(
-    str(OUTPUT_DIR / "spark_sql_results" / "trust_by_role"), header=True)
+save(trust_by_role, "trust_by_role")
 
-
-# ## Query 5 — Trust by experience level
-
-# In[7]:
-
-
+# -----------------------------------------------------------------------------
+# Query 5 — Trust by experience level
+# -----------------------------------------------------------------------------
+print("\n=== Q5: Trust by experience level ===")
 experience_analysis = spark.sql("""
 SELECT
     CASE
-        WHEN WorkExpNum IS NULL                   THEN 'Unknown'
-        WHEN WorkExpNum < 2                       THEN 'Beginner: 0-1 years'
-        WHEN WorkExpNum BETWEEN 2  AND 5          THEN 'Junior: 2-5 years'
-        WHEN WorkExpNum BETWEEN 6  AND 10         THEN 'Mid-level: 6-10 years'
-        WHEN WorkExpNum BETWEEN 11 AND 20         THEN 'Senior: 11-20 years'
+        WHEN WorkExpNum IS NULL              THEN 'Unknown'
+        WHEN WorkExpNum < 2                  THEN 'Beginner: 0-1 years'
+        WHEN WorkExpNum BETWEEN 2  AND 5     THEN 'Junior: 2-5 years'
+        WHEN WorkExpNum BETWEEN 6  AND 10    THEN 'Mid-level: 6-10 years'
+        WHEN WorkExpNum BETWEEN 11 AND 20    THEN 'Senior: 11-20 years'
         ELSE 'Expert: 20+ years'
-    END                                              AS ExperienceGroup,
+    END                                                AS ExperienceGroup,
     COUNT(*)                AS DeveloperCount,
     AVG(UsageScore)         AS AvgUsageScore,
     AVG(TrustScore)         AS AvgTrustScore,
@@ -153,29 +141,25 @@ GROUP BY 1
 ORDER BY AvgTrustScore DESC
 """)
 experience_analysis.show(truncate=False)
-experience_analysis.coalesce(1).write.mode("overwrite").csv(
-    str(OUTPUT_DIR / "spark_sql_results" / "experience_analysis"), header=True)
+save(experience_analysis, "experience_analysis")
 
+# -----------------------------------------------------------------------------
+# Query 6 — AI Trust Paradox quadrant analysis  (median split)
+# -----------------------------------------------------------------------------
+print("\n=== Q6: Trust Paradox quadrant analysis ===")
+analysed = df_scores.filter(col("TrustScore").isNotNull())
+median_usage = analysed.approxQuantile("UsageScore", [0.5], 0.001)[0]
+median_trust = analysed.approxQuantile("TrustScore", [0.5], 0.001)[0]
+print(f"median UsageScore (analysed population): {median_usage:.2f}")
+print(f"median TrustScore (analysed population): {median_trust:.2f}")
 
-# ## Query 6 — AI Trust Paradox quadrant analysis ⭐
-# 
-# Split the population into four groups around the **mean** UsageScore and TrustScore. **High Usage + Low Trust** is the *paradox group*.
-
-# In[8]:
-
-
-avg_usage = df_scores.agg(avg("UsageScore")).collect()[0][0]
-avg_trust = df_scores.agg(avg("TrustScore")).collect()[0][0]
-print(f"avg UsageScore: {avg_usage:.3f}")
-print(f"avg TrustScore: {avg_trust:.3f}")
-
-df_quadrants = df_scores.withColumn(
+df_quadrants = analysed.withColumn(
     "TrustUsageGroup",
-    when((col("UsageScore") >= avg_usage) & (col("TrustScore") >= avg_trust),
+    when((col("UsageScore") >= median_usage) & (col("TrustScore") >= median_trust),
          "High Usage - High Trust")
-    .when((col("UsageScore") >= avg_usage) & (col("TrustScore") <  avg_trust),
+    .when((col("UsageScore") >= median_usage) & (col("TrustScore") <  median_trust),
          "High Usage - Low Trust")
-    .when((col("UsageScore") <  avg_usage) & (col("TrustScore") >= avg_trust),
+    .when((col("UsageScore") <  median_usage) & (col("TrustScore") >= median_trust),
          "Low Usage - High Trust")
     .otherwise("Low Usage - Low Trust")
 )
@@ -188,21 +172,20 @@ SELECT
     AVG(UsageScore)           AS AvgUsageScore,
     AVG(TrustScore)           AS AvgTrustScore,
     AVG(FrustrationScore)     AS AvgFrustrationScore,
-    AVG(AgentAdoptionScore)   AS AvgAgentAdoptionScore
+    AVG(AgentDepth)           AS AvgAgentDepth,
+    AVG(AIModelCount)         AS AvgModelCount,
+    AVG(WorkflowIntegration)  AS AvgWorkflowIntegration
 FROM ai_trust_quadrants
 GROUP BY TrustUsageGroup
 ORDER BY DeveloperCount DESC
 """)
 quadrant_summary.show(truncate=False)
-quadrant_summary.coalesce(1).write.mode("overwrite").csv(
-    str(OUTPUT_DIR / "spark_sql_results" / "quadrant_summary"), header=True)
+save(quadrant_summary, "quadrant_summary")
 
-
-# ## Query 7 — Profile of the paradox group
-
-# In[9]:
-
-
+# -----------------------------------------------------------------------------
+# Query 7 — Profile of the paradox group
+# -----------------------------------------------------------------------------
+print("\n=== Q7: Paradox group profile ===")
 paradox_profile = spark.sql("""
 SELECT
     DevType,
@@ -211,7 +194,7 @@ SELECT
     COUNT(*)                  AS DeveloperCount,
     AVG(WorkExpNum)           AS AvgWorkExperience,
     AVG(FrustrationScore)     AS AvgFrustration,
-    AVG(AgentAdoptionScore)   AS AvgAgentAdoption
+    AVG(AgentDepth)           AS AvgAgentDepth
 FROM ai_trust_quadrants
 WHERE TrustUsageGroup = 'High Usage - Low Trust'
   AND DevType IS NOT NULL AND DevType <> 'Unknown'
@@ -220,17 +203,13 @@ HAVING DeveloperCount >= 20
 ORDER BY DeveloperCount DESC
 """)
 paradox_profile.show(30, truncate=False)
-paradox_profile.coalesce(1).write.mode("overwrite").csv(
-    str(OUTPUT_DIR / "spark_sql_results" / "paradox_profile"), header=True)
+save(paradox_profile, "paradox_profile")
 
-
-# ## Persist quadrants for downstream notebooks
-
-# In[10]:
-
-
+# -----------------------------------------------------------------------------
+# Persist quadrants for downstream scripts
+# -----------------------------------------------------------------------------
 out = OUTPUT_DIR / "cleaned_data" / "ai_trust_quadrants"
 df_quadrants.write.mode("overwrite").parquet(str(out))
-print("wrote:", out)
-spark.stop()
+print("\nwrote:", out)
 
+spark.stop()
