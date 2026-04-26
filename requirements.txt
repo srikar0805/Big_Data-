@@ -1,0 +1,11 @@
+pyspark==3.5.3
+ray[default]==2.40.0
+pandas
+numpy
+scikit-learn
+matplotlib
+plotly
+seaborn
+pyarrow
+nbformat
+jupyter

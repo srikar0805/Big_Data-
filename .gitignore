@@ -1,0 +1,24 @@
+# Large raw data — not redistributable. See data/README.md.
+data/survey_results_public.csv
+data/2025_Developer_Survey_Tool.pdf
+
+# Regenerable Spark intermediates
+output/cleaned_data/
+
+# Spark internal markers (not interesting on disk)
+**/_SUCCESS
+**/.*.crc
+
+# Local Python / Spark cruft
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+spark-warehouse/
+metastore_db/
+derby.log
+
+# OS
+.DS_Store
+Thumbs.db

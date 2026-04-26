@@ -1,0 +1,128 @@
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+26/04/26 16:45:56 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[Stage 0:>                                                          (0 + 1) / 1]                                                                                [Stage 4:>                                                          (0 + 8) / 8]                                                                                project root: /users/sk7dn/big_data/AI_Trust_Paradox_Phase2
+rows: 49191
++--------------+------------+------------------+------------------+------------------+-------------------+
+|TotalResponses|CountryCount|DeveloperRoleCount|AvgUsageScore     |AvgTrustScore     |AvgFrustrationScore|
++--------------+------------+------------------+------------------+------------------+-------------------+
+|49191         |178         |33                |2.5650830436461955|2.7060996486169926|1.0204508954890121 |
++--------------+------------+------------------+------------------+------------------+-------------------+
+
++-------------------------------------------+--------------+
+|AISelect                                   |DeveloperCount|
++-------------------------------------------+--------------+
+|Yes, I use AI tools daily                  |15883         |
+|Unknown                                    |15471         |
+|Yes, I use AI tools weekly                 |5958          |
+|No, and I don't plan to                    |5454          |
+|Yes, I use AI tools monthly or infrequently|4628          |
+|No, but I plan to soon                     |1797          |
++-------------------------------------------+--------------+
+
++-------------------------------------------+--------------+------------------+------------------+------------------+---------------------+
+|AISelect                                   |DeveloperCount|AvgTrustScore     |AvgSentimentScore |AvgComplexityScore|AvgFrustrationScore  |
++-------------------------------------------+--------------+------------------+------------------+------------------+---------------------+
+|Yes, I use AI tools daily                  |15883         |3.211211850338399 |4.260683213920164 |3.0632770579767046|1.6608323364603663   |
+|Unknown                                    |15471         |2.810810810810811 |3.1463414634146343|2.7058823529411766|0.0031672160817012474|
+|Yes, I use AI tools weekly                 |5958          |2.717844433146924 |3.6396165040232837|2.565288062127506 |1.6963746223564955   |
+|No, but I plan to soon                     |1797          |2.644811858608894 |3.306881587104774 |2.6898002103049423|0.900946021146355    |
+|Yes, I use AI tools monthly or infrequently|4628          |2.3109796186719263|2.990143369175627 |2.2091668776905546|1.5168539325842696   |
+|No, and I don't plan to                    |5454          |1.5771375464684014|1.7699824115692788|1.5369609856262834|0.920975430876421    |
++-------------------------------------------+--------------+------------------+------------------+------------------+---------------------+
+
++---------------------------------------------+--------------+------------------+------------------+-------------------+
+|DevType                                      |DeveloperCount|AvgUsageScore     |AvgTrustScore     |AvgFrustrationScore|
++---------------------------------------------+--------------+------------------+------------------+-------------------+
+|Developer, AI apps or physical AI            |236           |3.1440677966101696|3.3333333333333335|1.0466101694915255 |
+|AI/ML engineer                               |677           |3.1816838995568686|3.1953290870488322|1.1624815361890695 |
+|Product manager                              |205           |2.9170731707317072|3.172185430463576 |1.0390243902439025 |
+|UX, Research Ops or UI design professional   |115           |2.3391304347826085|3.112676056338028 |1.191304347826087  |
+|Project manager                              |302           |2.7218543046357615|3.0530973451327434|0.9635761589403974 |
+|Data or business analyst                     |351           |2.5128205128205128|3.0198412698412698|1.0484330484330484 |
+|Developer, mobile                            |1391          |3.04097771387491  |2.979431929480901 |1.0992092020129403 |
+|Developer, front-end                         |1974          |3.102836879432624 |2.9508196721311477|1.1803444782168186 |
+|Founder, technology or otherwise             |431           |3.2946635730858467|2.919402985074627 |1.1670533642691416 |
+|Data scientist                               |574           |3.081881533101045 |2.8950892857142856|1.3170731707317074 |
+|Data engineer                                |770           |3.0441558441558443|2.8794567062818337|1.1805194805194805 |
+|Engineering manager                          |1068          |3.1235955056179776|2.875598086124402 |1.1310861423220975 |
+|Developer, QA or test                        |343           |2.883381924198251 |2.8576923076923078|1.1107871720116618 |
+|Senior executive (C-suite, VP, etc.)         |528           |3.321969696969697 |2.8507109004739335|1.2234848484848484 |
+|Architect, software or solutions             |2684          |3.1352459016393444|2.781073446327684 |1.1277943368107302 |
+|Developer, full-stack                        |12351         |3.0323050765120234|2.7251270110076207|1.183143065338839  |
+|Database administrator or engineer           |175           |2.2285714285714286|2.716417910447761 |1.0057142857142858 |
+|Developer, back-end                          |6453          |2.938478227181156 |2.6554552912223133|1.1469084146908415 |
+|Student                                      |3008          |2.58843085106383  |2.642761093679964 |1.2952127659574468 |
+|Support engineer or analyst                  |251           |2.318725099601594 |2.624338624338624 |1.0836653386454183 |
+|Cybersecurity or InfoSec professional        |370           |2.735135135135135 |2.593525179856115 |1.2162162162162162 |
+|DevOps engineer or professional              |1053          |3.040835707502374 |2.5911799761620977|1.241215574548908  |
+|Developer, desktop or enterprise applications|1919          |2.655028660760813 |2.548220064724919 |1.013548723293382  |
+|System administrator                         |480           |2.3020833333333335|2.5454545454545454|1.0625             |
+|Other (please specify):                      |1825          |2.444931506849315 |2.53397341211226  |1.0794520547945206 |
+|Retired                                      |458           |1.965065502183406 |2.4864130434782608|0.5545851528384279 |
+|Cloud infrastructure engineer                |441           |2.764172335600907 |2.4658385093167703|1.0476190476190477 |
+|Academic researcher                          |1131          |2.575596816976127 |2.44988344988345  |1.112290008841733  |
+|Applied scientist                            |297           |2.531986531986532 |2.3290598290598292|1.0909090909090908 |
+|Developer, embedded applications or devices  |1274          |2.514128728414443 |2.320474777448071 |1.1106750392464677 |
++---------------------------------------------+--------------+------------------+------------------+-------------------+
+only showing top 30 rows
+
++---------------------+--------------+------------------+------------------+-------------------+
+|ExperienceGroup      |DeveloperCount|AvgUsageScore     |AvgTrustScore     |AvgFrustrationScore|
++---------------------+--------------+------------------+------------------+-------------------+
+|Beginner: 0-1 years  |2453          |2.3917651854871584|2.768300873069174 |1.084386465552385  |
+|Junior: 2-5 years    |9750          |2.631897435897436 |2.7632277196815984|1.1097435897435897 |
+|Mid-level: 6-10 years|9654          |2.7609281126993994|2.714264727486411 |1.1083488709343277 |
+|Senior: 11-20 years  |12026         |2.8216364543489107|2.703936301446675 |1.08539830367537   |
+|Unknown              |6298          |1.4302953318513814|2.697258641239571 |0.6713242299142584 |
+|Expert: 20+ years    |9010          |2.780910099889012 |2.6400837988826815|0.9695893451720311 |
++---------------------+--------------+------------------+------------------+-------------------+
+
+avg UsageScore: 2.565
+avg TrustScore: 2.706
+[Stage 88:>                                                         (0 + 8) / 8]                                                                                +-----------------------+--------------+------------------+------------------+-------------------+---------------------+
+|TrustUsageGroup        |DeveloperCount|AvgUsageScore     |AvgTrustScore     |AvgFrustrationScore|AvgAgentAdoptionScore|
++-----------------------+--------------+------------------+------------------+-------------------+---------------------+
+|Low Usage - Low Trust  |21379         |0.3744796295430095|1.3609845031905197|0.25992796669629076|0.07918985920763366  |
+|High Usage - High Trust|16393         |4.5983651558592085|3.6868785457207345|1.5482828036356981 |2.2922588909900568   |
+|High Usage - Low Trust |9733          |4.132538785574848 |1.688893455255317 |1.8530771601767184 |1.5668344806328984   |
+|Low Usage - High Trust |1686          |1.5243179122182682|3.4181494661921707|0.7253855278766311 |0.8030842230130486   |
++-----------------------+--------------+------------------+------------------+-------------------+---------------------+
+
++--------------------------------+----------------------------------------------------+----------------------------------------------------------------------------+--------------+------------------+------------------+------------------+
+|DevType                         |Country                                             |RemoteWork                                                                  |DeveloperCount|AvgWorkExperience |AvgFrustration    |AvgAgentAdoption  |
++--------------------------------+----------------------------------------------------+----------------------------------------------------------------------------+--------------+------------------+------------------+------------------+
+|Developer, full-stack           |United States of America                            |Remote                                                                      |318           |15.085173501577287|1.8459119496855345|1.5125786163522013|
+|Developer, back-end             |United States of America                            |Remote                                                                      |162           |15.950310559006212|1.882716049382716 |1.8024691358024691|
+|Developer, full-stack           |United States of America                            |Hybrid (some remote, leans heavy to in-person)                              |101           |12.445544554455445|1.7425742574257426|1.99009900990099  |
+|Developer, full-stack           |United States of America                            |In-person                                                                   |93            |9.2               |1.924731182795699 |1.3118279569892473|
+|Developer, full-stack           |United States of America                            |Hybrid (some in-person, leans heavy to flexibility)                         |88            |13.659090909090908|1.9772727272727273|1.6022727272727273|
+|Developer, full-stack           |Germany                                             |Remote                                                                      |74            |14.534246575342467|2.0               |1.6216216216216217|
+|Developer, full-stack           |United Kingdom of Great Britain and Northern Ireland|Remote                                                                      |68            |16.264705882352942|1.8088235294117647|1.6176470588235294|
+|Developer, full-stack           |Germany                                             |Hybrid (some remote, leans heavy to in-person)                              |68            |7.9411764705882355|2.088235294117647 |1.661764705882353 |
+|Architect, software or solutions|United States of America                            |Remote                                                                      |66            |20.984848484848484|1.7272727272727273|2.090909090909091 |
+|Developer, full-stack           |United States of America                            |Your choice (very flexible, you can come in when you want or just as needed)|62            |15.080645161290322|1.8387096774193548|2.1129032258064515|
+|Student                         |United States of America                            |Unknown                                                                     |62            |4.235294117647059 |2.0806451612903225|0.9032258064516129|
+|Developer, full-stack           |United States of America                            |Unknown                                                                     |62            |18.721311475409838|1.9838709677419355|1.8225806451612903|
+|Developer, full-stack           |Germany                                             |Hybrid (some in-person, leans heavy to flexibility)                         |60            |13.767857142857142|1.8               |1.5333333333333334|
+|Developer, full-stack           |Germany                                             |Your choice (very flexible, you can come in when you want or just as needed)|60            |11.847457627118644|2.1               |1.5833333333333333|
+|Developer, full-stack           |Canada                                              |Remote                                                                      |59            |14.94915254237288 |2.0338983050847457|1.9491525423728813|
+|Student                         |Germany                                             |Unknown                                                                     |53            |3.5714285714285716|2.0377358490566038|0.8113207547169812|
+|Developer, full-stack           |Germany                                             |Unknown                                                                     |50            |16.895833333333332|1.8               |1.42              |
+|Student                         |India                                               |Unknown                                                                     |45            |1.875             |2.2888888888888888|1.2666666666666666|
+|Engineering manager             |United States of America                            |Remote                                                                      |44            |19.023255813953487|1.7272727272727273|2.0681818181818183|
+|Developer, full-stack           |United Kingdom of Great Britain and Northern Ireland|Hybrid (some in-person, leans heavy to flexibility)                         |42            |11.119047619047619|1.9761904761904763|1.5476190476190477|
+|Developer, front-end            |United States of America                            |Remote                                                                      |42            |15.048780487804878|2.0               |1.2857142857142858|
+|Other (please specify):         |United States of America                            |In-person                                                                   |39            |11.75             |1.9743589743589745|1.1794871794871795|
+|Developer, back-end             |United States of America                            |Hybrid (some remote, leans heavy to in-person)                              |38            |13.842105263157896|2.026315789473684 |1.631578947368421 |
+|Developer, back-end             |Germany                                             |Remote                                                                      |38            |11.91891891891892 |2.1052631578947367|1.4473684210526316|
+|Developer, back-end             |Canada                                              |Remote                                                                      |36            |14.444444444444445|1.5833333333333333|1.7222222222222223|
+|Developer, back-end             |United Kingdom of Great Britain and Northern Ireland|Remote                                                                      |34            |15.147058823529411|2.0294117647058822|1.588235294117647 |
+|Developer, back-end             |Germany                                             |Your choice (very flexible, you can come in when you want or just as needed)|33            |15.212121212121213|1.9090909090909092|1.878787878787879 |
+|Developer, full-stack           |Brazil                                              |Remote                                                                      |32            |9.419354838709678 |1.90625           |1.875             |
+|DevOps engineer or professional |United States of America                            |Remote                                                                      |32            |13.5              |2.09375           |1.6875            |
+|Developer, back-end             |Germany                                             |Hybrid (some in-person, leans heavy to flexibility)                         |31            |13.387096774193548|2.0               |1.2580645161290323|
++--------------------------------+----------------------------------------------------+----------------------------------------------------------------------------+--------------+------------------+------------------+------------------+
+only showing top 30 rows
+
+wrote: /users/sk7dn/big_data/AI_Trust_Paradox_Phase2/output/cleaned_data/ai_trust_quadrants

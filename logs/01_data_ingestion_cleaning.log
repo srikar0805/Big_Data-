@@ -1,0 +1,304 @@
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+26/04/26 16:45:10 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[Stage 1:>                                                          (0 + 1) / 1]                                                                                project root: /users/sk7dn/big_data/AI_Trust_Paradox_Phase2
+Spark version: 3.5.3
+Rows : 49191
+Cols : 172
+root
+ |-- ResponseId: string (nullable = true)
+ |-- MainBranch: string (nullable = true)
+ |-- Age: string (nullable = true)
+ |-- EdLevel: string (nullable = true)
+ |-- Employment: string (nullable = true)
+ |-- EmploymentAddl: string (nullable = true)
+ |-- WorkExp: string (nullable = true)
+ |-- LearnCodeChoose: string (nullable = true)
+ |-- LearnCode: string (nullable = true)
+ |-- LearnCodeAI: string (nullable = true)
+ |-- AILearnHow: string (nullable = true)
+ |-- YearsCode: string (nullable = true)
+ |-- DevType: string (nullable = true)
+ |-- OrgSize: string (nullable = true)
+ |-- ICorPM: string (nullable = true)
+ |-- RemoteWork: string (nullable = true)
+ |-- PurchaseInfluence: string (nullable = true)
+ |-- TechEndorseIntro: string (nullable = true)
+ |-- TechEndorse_1: string (nullable = true)
+ |-- TechEndorse_2: string (nullable = true)
+ |-- TechEndorse_3: string (nullable = true)
+ |-- TechEndorse_4: string (nullable = true)
+ |-- TechEndorse_5: string (nullable = true)
+ |-- TechEndorse_6: string (nullable = true)
+ |-- TechEndorse_7: string (nullable = true)
+ |-- TechEndorse_8: string (nullable = true)
+ |-- TechEndorse_9: string (nullable = true)
+ |-- TechEndorse_13: string (nullable = true)
+ |-- TechEndorse_13_TEXT: string (nullable = true)
+ |-- TechOppose_1: string (nullable = true)
+ |-- TechOppose_2: string (nullable = true)
+ |-- TechOppose_3: string (nullable = true)
+ |-- TechOppose_5: string (nullable = true)
+ |-- TechOppose_7: string (nullable = true)
+ |-- TechOppose_9: string (nullable = true)
+ |-- TechOppose_11: string (nullable = true)
+ |-- TechOppose_13: string (nullable = true)
+ |-- TechOppose_16: string (nullable = true)
+ |-- TechOppose_15: string (nullable = true)
+ |-- TechOppose_15_TEXT: string (nullable = true)
+ |-- Industry: string (nullable = true)
+ |-- JobSatPoints_1: string (nullable = true)
+ |-- JobSatPoints_2: string (nullable = true)
+ |-- JobSatPoints_3: string (nullable = true)
+ |-- JobSatPoints_4: string (nullable = true)
+ |-- JobSatPoints_5: string (nullable = true)
+ |-- JobSatPoints_6: string (nullable = true)
+ |-- JobSatPoints_7: string (nullable = true)
+ |-- JobSatPoints_8: string (nullable = true)
+ |-- JobSatPoints_9: string (nullable = true)
+ |-- JobSatPoints_10: string (nullable = true)
+ |-- JobSatPoints_11: string (nullable = true)
+ |-- JobSatPoints_13: string (nullable = true)
+ |-- JobSatPoints_14: string (nullable = true)
+ |-- JobSatPoints_15: string (nullable = true)
+ |-- JobSatPoints_16: string (nullable = true)
+ |-- JobSatPoints_15_TEXT: string (nullable = true)
+ |-- AIThreat: string (nullable = true)
+ |-- NewRole: string (nullable = true)
+ |-- ToolCountWork: string (nullable = true)
+ |-- ToolCountPersonal: string (nullable = true)
+ |-- Country: string (nullable = true)
+ |-- Currency: string (nullable = true)
+ |-- CompTotal: string (nullable = true)
+ |-- LanguageChoice: string (nullable = true)
+ |-- LanguageHaveWorkedWith: string (nullable = true)
+ |-- LanguageWantToWorkWith: string (nullable = true)
+ |-- LanguageAdmired: string (nullable = true)
+ |-- LanguagesHaveEntry: string (nullable = true)
+ |-- LanguagesWantEntry: string (nullable = true)
+ |-- DatabaseChoice: string (nullable = true)
+ |-- DatabaseHaveWorkedWith: string (nullable = true)
+ |-- DatabaseWantToWorkWith: string (nullable = true)
+ |-- DatabaseAdmired: string (nullable = true)
+ |-- DatabaseHaveEntry: string (nullable = true)
+ |-- DatabaseWantEntry: string (nullable = true)
+ |-- PlatformChoice: string (nullable = true)
+ |-- PlatformHaveWorkedWith: string (nullable = true)
+ |-- PlatformWantToWorkWith: string (nullable = true)
+ |-- PlatformAdmired: string (nullable = true)
+ |-- PlatformHaveEntry: string (nullable = true)
+ |-- PlatformWantEntry: string (nullable = true)
+ |-- WebframeChoice: string (nullable = true)
+ |-- WebframeHaveWorkedWith: string (nullable = true)
+ |-- WebframeWantToWorkWith: string (nullable = true)
+ |-- WebframeAdmired: string (nullable = true)
+ |-- WebframeHaveEntry: string (nullable = true)
+ |-- WebframeWantEntry: string (nullable = true)
+ |-- DevEnvsChoice: string (nullable = true)
+ |-- DevEnvsHaveWorkedWith: string (nullable = true)
+ |-- DevEnvsWantToWorkWith: string (nullable = true)
+ |-- DevEnvsAdmired: string (nullable = true)
+ |-- DevEnvHaveEntry: string (nullable = true)
+ |-- DevEnvWantEntry: string (nullable = true)
+ |-- SOTagsHaveWorkedWith: string (nullable = true)
+ |-- SOTagsWantToWorkWith: string (nullable = true)
+ |-- SOTagsAdmired: string (nullable = true)
+ |-- SOTagsHaveEntry: string (nullable = true)
+ |-- SOTagsWant Entry: string (nullable = true)
+ |-- OpSysPersonal use: string (nullable = true)
+ |-- OpSysProfessional use: string (nullable = true)
+ |-- OfficeStackAsyncHaveWorkedWith: string (nullable = true)
+ |-- OfficeStackAsyncWantToWorkWith: string (nullable = true)
+ |-- OfficeStackAsyncAdmired: string (nullable = true)
+ |-- OfficeStackHaveEntry: string (nullable = true)
+ |-- OfficeStackWantEntry: string (nullable = true)
+ |-- CommPlatformHaveWorkedWith: string (nullable = true)
+ |-- CommPlatformWantToWorkWith: string (nullable = true)
+ |-- CommPlatformAdmired: string (nullable = true)
+ |-- CommPlatformHaveEntr: string (nullable = true)
+ |-- CommPlatformWantEntr: string (nullable = true)
+ |-- AIModelsChoice: string (nullable = true)
+ |-- AIModelsHaveWorkedWith: string (nullable = true)
+ |-- AIModelsWantToWorkWith: string (nullable = true)
+ |-- AIModelsAdmired: string (nullable = true)
+ |-- AIModelsHaveEntry: string (nullable = true)
+ |-- AIModelsWantEntry: string (nullable = true)
+ |-- SOAccount: string (nullable = true)
+ |-- SOVisitFreq: string (nullable = true)
+ |-- SODuration: string (nullable = true)
+ |-- SOPartFreq: string (nullable = true)
+ |-- SO_Dev_Content: string (nullable = true)
+ |-- SO_Actions_1: string (nullable = true)
+ |-- SO_Actions_16: string (nullable = true)
+ |-- SO_Actions_3: string (nullable = true)
+ |-- SO_Actions_4: string (nullable = true)
+ |-- SO_Actions_5: string (nullable = true)
+ |-- SO_Actions_6: string (nullable = true)
+ |-- SO_Actions_9: string (nullable = true)
+ |-- SO_Actions_7: string (nullable = true)
+ |-- SO_Actions_10: string (nullable = true)
+ |-- SO_Actions_15: string (nullable = true)
+ |-- SO_Actions_15_TEXT: string (nullable = true)
+ |-- SOComm: string (nullable = true)
+ |-- SOFriction: string (nullable = true)
+ |-- AISelect: string (nullable = true)
+ |-- AISent: string (nullable = true)
+ |-- AIAcc: string (nullable = true)
+ |-- AIComplex: string (nullable = true)
+ |-- AIToolCurrently partially AI: string (nullable = true)
+ |-- AIToolDon't plan to use AI for this task: string (nullable = true)
+ |-- AIToolPlan to partially use AI: string (nullable = true)
+ |-- AIToolPlan to mostly use AI: string (nullable = true)
+ |-- AIToolCurrently mostly AI: string (nullable = true)
+ |-- AIFrustration: string (nullable = true)
+ |-- AIExplain: string (nullable = true)
+ |-- AIAgents: string (nullable = true)
+ |-- AIAgentChange: string (nullable = true)
+ |-- AIAgent_Uses: string (nullable = true)
+ |-- AgentUsesGeneral: string (nullable = true)
+ |-- AIAgentImpactSomewhat agree: string (nullable = true)
+ |-- AIAgentImpactNeutral: string (nullable = true)
+ |-- AIAgentImpactSomewhat disagree: string (nullable = true)
+ |-- AIAgentImpactStrongly agree: string (nullable = true)
+ |-- AIAgentImpactStrongly disagree: string (nullable = true)
+ |-- AIAgentChallengesNeutral: string (nullable = true)
+ |-- AIAgentChallengesSomewhat disagree: string (nullable = true)
+ |-- AIAgentChallengesStrongly agree: string (nullable = true)
+ |-- AIAgentChallengesSomewhat agree: string (nullable = true)
+ |-- AIAgentChallengesStrongly disagree: string (nullable = true)
+ |-- AIAgentKnowledge: string (nullable = true)
+ |-- AIAgentKnowWrite: string (nullable = true)
+ |-- AIAgentOrchestration: string (nullable = true)
+ |-- AIAgentOrchWrite: string (nullable = true)
+ |-- AIAgentObserveSecure: string (nullable = true)
+ |-- AIAgentObsWrite: string (nullable = true)
+ |-- AIAgentExternal: string (nullable = true)
+ |-- AIAgentExtWrite: string (nullable = true)
+ |-- AIHuman: string (nullable = true)
+ |-- AIOpen: string (nullable = true)
+ |-- ConvertedCompYearly: string (nullable = true)
+ |-- JobSat: string (nullable = true)
+
+available: 34 cols
+missing  : []
+-RECORD 0------------------------------------------------------------------------------------------------
+ ResponseId                               | 1                                                            
+ MainBranch                               | I am a developer by profession                               
+ Age                                      | 25-34 years old                                              
+ EdLevel                                  | Master’s degree (M.A., M.S., M.Eng., MBA, etc.)              
+ Employment                               | Employed                                                     
+ WorkExp                                  | 8                                                            
+ YearsCode                                | 14                                                           
+ DevType                                  | Developer, mobile                                            
+ OrgSize                                  | 20 to 99 employees                                           
+ ICorPM                                   | People manager                                               
+ RemoteWork                               | Remote                                                       
+ Country                                  | Ukraine                                                      
+ Industry                                 | Fintech                                                      
+ ConvertedCompYearly                      | 61256                                                        
+ JobSat                                   | 10                                                           
+ AIThreat                                 | I'm not sure                                                 
+ SOFriction                               | Rarely, almost never                                         
+ AISelect                                 | Yes, I use AI tools monthly or infrequently                  
+ AISent                                   | Indifferent                                                  
+ AIAcc                                    | Neither trust nor distrust                                   
+ AIComplex                                | Bad at handling complex tasks                                
+ AIToolCurrently partially AI             | Learning about a codebase;Writing code;Search for answers    
+ AIToolCurrently mostly AI                | NULL                                                         
+ AIToolPlan to partially use AI           | Documenting code;Debugging or fixing code;Testing code;Co... 
+ AIToolPlan to mostly use AI              | NULL                                                         
+ AIToolDon't plan to use AI for this task | Project planning;Deployment and monitoring;Learning new c... 
+ AIFrustration                            | AI solutions that are almost right, but not quite            
+ AIExplain                                | No                                                           
+ AIAgents                                 | Yes, I use AI agents at work monthly or infrequently         
+ AIAgentChange                            | Not at all or minimally                                      
+ AIAgent_Uses                             | Software engineering                                         
+ AgentUsesGeneral                         | NULL                                                         
+ AIModelsHaveWorkedWith                   | openAI GPT (chatbot models);openAI Image generating model... 
+ DevEnvsHaveWorkedWith                    | Android Studio;Notepad++;Visual Studio;Visual Studio Code... 
+-RECORD 1------------------------------------------------------------------------------------------------
+ ResponseId                               | 2                                                            
+ MainBranch                               | I am a developer by profession                               
+ Age                                      | 25-34 years old                                              
+ EdLevel                                  | Associate degree (A.A., A.S., etc.)                          
+ Employment                               | Employed                                                     
+ WorkExp                                  | 2                                                            
+ YearsCode                                | 10                                                           
+ DevType                                  | Developer, back-end                                          
+ OrgSize                                  | 500 to 999 employees                                         
+ ICorPM                                   | Individual contributor                                       
+ RemoteWork                               | Hybrid (some in-person, leans heavy to flexibility)          
+ Country                                  | Netherlands                                                  
+ Industry                                 | Retail and Consumer Services                                 
+ ConvertedCompYearly                      | 104413                                                       
+ JobSat                                   | 9                                                            
+ AIThreat                                 | I'm not sure                                                 
+ SOFriction                               | About half of the time                                       
+ AISelect                                 | Yes, I use AI tools weekly                                   
+ AISent                                   | Indifferent                                                  
+ AIAcc                                    | Neither trust nor distrust                                   
+ AIComplex                                | Bad at handling complex tasks                                
+ AIToolCurrently partially AI             | Learning new concepts or technologies                        
+ AIToolCurrently mostly AI                | NULL                                                         
+ AIToolPlan to partially use AI           | Writing code;Documenting code;Debugging or fixing code;Te... 
+ AIToolPlan to mostly use AI              | NULL                                                         
+ AIToolDon't plan to use AI for this task | Learning about a codebase;Project planning;Committing and... 
+ AIFrustration                            | AI solutions that are almost right, but not quite;Debuggi... 
+ AIExplain                                | No                                                           
+ AIAgents                                 | No, and I don't plan to                                      
+ AIAgentChange                            | Not at all or minimally                                      
+ AIAgent_Uses                             | NULL                                                         
+ AgentUsesGeneral                         | NULL                                                         
+ AIModelsHaveWorkedWith                   | openAI GPT (chatbot models)                                  
+ DevEnvsHaveWorkedWith                    | IntelliJ IDEA;PyCharm;Visual Studio Code;Xcode               
+-RECORD 2------------------------------------------------------------------------------------------------
+ ResponseId                               | 3                                                            
+ MainBranch                               | I am a developer by profession                               
+ Age                                      | 35-44 years old                                              
+ EdLevel                                  | Bachelor’s degree (B.A., B.S., B.Eng., etc.)                 
+ Employment                               | Independent contractor, freelancer, or self-employed         
+ WorkExp                                  | 10                                                           
+ YearsCode                                | 12                                                           
+ DevType                                  | Developer, front-end                                         
+ OrgSize                                  | NULL                                                         
+ ICorPM                                   | NULL                                                         
+ RemoteWork                               | NULL                                                         
+ Country                                  | Ukraine                                                      
+ Industry                                 | Software Development                                         
+ ConvertedCompYearly                      | 53061                                                        
+ JobSat                                   | 8                                                            
+ AIThreat                                 | No                                                           
+ SOFriction                               | About half of the time                                       
+ AISelect                                 | Yes, I use AI tools daily                                    
+ AISent                                   | Favorable                                                    
+ AIAcc                                    | Somewhat trust                                               
+ AIComplex                                | Neither good or bad at handling complex tasks                
+ AIToolCurrently partially AI             | Documenting code;Debugging or fixing code;Testing code;Cr... 
+ AIToolCurrently mostly AI                | NULL                                                         
+ AIToolPlan to partially use AI           | Project planning;Committing and reviewing code;Deployment... 
+ AIToolPlan to mostly use AI              | Learning about a codebase;Writing code;Generating content... 
+ AIToolDon't plan to use AI for this task | NULL                                                         
+ AIFrustration                            | AI solutions that are almost right, but not quite;Debuggi... 
+ AIExplain                                | No                                                           
+ AIAgents                                 | Yes, I use AI agents at work weekly                          
+ AIAgentChange                            | Yes, somewhat                                                
+ AIAgent_Uses                             | Software engineering                                         
+ AgentUsesGeneral                         | Multi-platform search enablement                             
+ AIModelsHaveWorkedWith                   | Gemini (Flash general purpose models);openAI GPT (chatbot... 
+ DevEnvsHaveWorkedWith                    | Visual Studio Code                                           
+only showing top 3 rows
+[Stage 5:>                                                          (0 + 1) / 1]                                                                                [Stage 11:>                                                         (0 + 1) / 1]                                                                                [Stage 14:>                                                         (0 + 1) / 1][Stage 16:>                                                         (0 + 8) / 8]                                                                                
+rows after de-dupe: 49191
++-------+----------+---------+------------+
+|WorkExp|WorkExpNum|YearsCode|YearsCodeNum|
++-------+----------+---------+------------+
+|      8|       8.0|       14|        14.0|
+|      7|       7.0|       10|        10.0|
+|     26|      26.0|       41|        41.0|
+|      7|       7.0|        7|         7.0|
+|     18|      18.0|       26|        26.0|
++-------+----------+---------+------------+
+only showing top 5 rows
+
+wrote: /users/sk7dn/big_data/AI_Trust_Paradox_Phase2/output/cleaned_data/cleaned_survey_data
+partitions written: 8

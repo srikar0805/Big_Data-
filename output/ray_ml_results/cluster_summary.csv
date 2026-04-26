@@ -1,0 +1,5 @@
+Cluster,UsageScore,TrustScore,SentimentScore,ComplexityScore,FrustrationScore,AgentAdoptionScore,AIModelCount,DevEnvToolCount,WorkExpNum,DeveloperCount
+0,4.492,3.669,4.34,3.597,1.162,2.038,0.979,1.998,15.162,8861
+1,2.217,1.663,2.179,1.585,1.461,0.563,0.462,2.072,15.338,4321
+2,4.847,3.471,4.463,3.431,1.939,3.519,5.388,5.355,11.952,4811
+3,4.436,2.206,3.628,1.857,2.126,1.642,1.853,3.166,11.394,7321
