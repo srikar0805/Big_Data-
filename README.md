@@ -1,8 +1,8 @@
-# AI Trust Paradox — Phase 2
+# AI Trust Paradox, Phase 2
 
 **An Empirical Big Data Study of Trust in AI Coding Tools Using Apache Spark and Ray**
 
-CMP_SC-8540 — Big Data and Model Management — Spring 2026
+CMP_SC-8540, Big Data and Model Management, Spring 2026
 Team: Preya Patel, Sai Srikar
 
 [![pipeline](https://img.shields.io/badge/pipeline-5%2F5%20scripts-success)]()
@@ -21,7 +21,7 @@ respondents, 172 columns), built three **multi-column composite scores**
 (Usage / Trust / Frustration on a 0–100 scale), ran Spark-SQL analytics
 to split the population into four trust × usage quadrants, and trained
 Ray-orchestrated clustering and classification models to characterise the
-**AI Trust Paradox** group — developers who use AI heavily yet still
+**AI Trust Paradox** group, developers who use AI heavily yet still
 distrust it. The whole analysis is then exposed via an interactive Panel
 dashboard.
 
@@ -46,7 +46,7 @@ AI_Trust_Paradox_Phase2/
 ├── logs/                                 # stdout/stderr captured per script
 │   └── 0{1..5}_*.log
 ├── output/                               # all derived artefacts
-│   ├── cleaned_data/             # parquet (Spark) — gitignored, regenerable
+│   ├── cleaned_data/             # parquet (Spark), gitignored, regenerable
 │   ├── spark_sql_results/        # CSVs of every SQL query
 │   ├── ray_ml_results/           # cluster labels + RF importances + metrics
 │   └── visualizations/           # PNGs (9 charts)
@@ -119,28 +119,28 @@ Microsoft Fabric instructions.
 ```
 data/survey_results_public.csv  (135 MB CSV, 49,191 × 172)
         │
-        ▼   script 01  — Spark CSV  →  Parquet
+        ▼   script 01 , Spark CSV  →  Parquet
 output/cleaned_data/cleaned_survey_data
         │
-        ▼   script 02  — Spark SQL feature-engineering
+        ▼   script 02 , Spark SQL feature-engineering
 output/cleaned_data/ai_trust_scores      (composite UsageScore / TrustScore /
                                           FrustrationScore on 0–100 scale,
                                           plus the per-component sub-scores)
         │
-        ├─▶ script 03  — Spark SQL analytics
+        ├─▶ script 03 , Spark SQL analytics
         │      output/spark_sql_results/{dataset_summary,
         │      ai_usage_distribution, trust_by_usage, trust_by_role,
         │      experience_analysis, quadrant_summary, paradox_profile}
         │
-        ├─▶ script 04  — Ray K-Means + Ray RF ensemble
+        ├─▶ script 04 , Ray K-Means + Ray RF ensemble
         │      output/ray_ml_results/{ray_cluster_results.csv,
         │      cluster_summary.csv, paradox_feature_importance.csv,
         │      rf_metrics.json, rf_predictions.csv, kmeans_scan.csv}
         │
-        ├─▶ script 05  — Visualizations + tests
+        ├─▶ script 05 , Visualizations + tests
         │      output/visualizations/*.png
         │
-        └─▶ dashboard/app.py  — Interactive Panel + Plotly dashboard
+        └─▶ dashboard/app.py , Interactive Panel + Plotly dashboard
                sidebar filters · KPI strip · 3 tabs (Paradox / Trust / ML)
 ```
 
@@ -152,7 +152,7 @@ Each headline score is built from **multiple survey columns**, normalised to
 [0, 1] per component, averaged, and rescaled to **0 – 100** so the three
 scores are directly comparable.
 
-### `UsageScore` — built from 4 columns
+### `UsageScore`, built from 4 columns
 *"How deeply integrated is this developer with AI tools?"*
 
 | Component | Survey column | Normalisation |
@@ -164,7 +164,7 @@ scores are directly comparable.
 
 `UsageScore = mean(4 components) × 100`
 
-### `TrustScore` — built from 3 columns
+### `TrustScore`, built from 3 columns
 *"How much does this developer trust AI?"*
 
 | Component | Survey column | Normalisation |
@@ -173,9 +173,9 @@ scores are directly comparable.
 | Complex-task trust | `AIComplex` | Very well=5 … Very poor=1 → (x-1)/4 |
 | Sentiment | `AISent` | Very favorable=5 … Very unfavorable=1 → (x-1)/4 |
 
-`TrustScore = mean(3 components) × 100` &nbsp; (NULL if any component skipped — 27,258 / 49,191 respondents have a TrustScore)
+`TrustScore = mean(3 components) × 100` &nbsp;(NULL if any component skipped, 27,258 / 49,191 respondents have a TrustScore)
 
-### `FrustrationScore` — built from 2 columns
+### `FrustrationScore`, built from 2 columns
 *"How frustrated is this developer with AI?"*
 
 | Component | Survey column | Normalisation |
@@ -208,7 +208,7 @@ answered all three trust questions. Median is used (not mean) for a robust
 
 → Trust **and** frustration both rise with usage. So heavy use generally
 *does* build trust, but ~16 % of high-usage developers stay high-usage
-*despite* low trust — the paradox group.
+*despite* low trust, the paradox group.
 
 | Quadrant (median split) | Devs | Avg Frustration |
 |---|---:|---:|
@@ -229,14 +229,14 @@ Random-forest ensemble accuracy on held-out test set: **83.6 %**.
 
 ---
 
-## Machine learning — what each model predicts
+## Machine learning, what each model predicts
 
 Two ML models are orchestrated in parallel by Ray (script 04):
 
-### K-Means clustering — *"which tribe does this developer belong to?"*
+### K-Means clustering, *"which tribe does this developer belong to?"*
 
 - **Predicts**: a cluster ID (0–3) for each developer, *unsupervised*.
-- **Doesn't see** the paradox label at all — it groups people purely on
+- **Doesn't see** the paradox label at all, it groups people purely on
   similarity in the 11-feature space (composites + components + experience).
 - **Why it matters**: one of the 4 natural tribes lines up with the paradox
   quadrant. That's independent confirmation that the paradox is a *real*
@@ -244,11 +244,11 @@ Two ML models are orchestrated in parallel by Ray (script 04):
 - **Outputs**: `cluster_summary.csv` (centroids), `ray_cluster_results.csv`
   (per-developer cluster IDs), `kmeans_scan.csv` (k-sweep diagnostics).
 
-### Random Forest classifier — *"will this developer be in the paradox group?"*
+### Random Forest classifier, *"will this developer be in the paradox group?"*
 
 - **Predicts**: 1 (paradox) or 0 (not paradox) for each developer, *supervised*.
 - **Crucial trick**: trust columns (`AIAcc`, `AIComplex`, `AISent`, and the
-  composite `TrustScore`) are **excluded** from the predictors — they define
+  composite `TrustScore`) are **excluded** from the predictors, they define
   the label, so keeping them would leak. The model has to predict paradox
   membership using only **how** developers use AI + how frustrated they are
   + how experienced they are.
@@ -312,5 +312,5 @@ For Microsoft Fabric instructions, see
 
 ## License
 
-Code: MIT. Dataset: ODbL (Open Database License) — see
+Code: MIT. Dataset: ODbL (Open Database License), see
 <https://survey.stackoverflow.co/>.

@@ -1,5 +1,5 @@
 """
-AI Trust Paradox — Interactive Dashboard (Panel + Plotly)
+AI Trust Paradox, Interactive Dashboard (Panel + Plotly)
 =========================================================
 
 Reads the parquet / CSV / JSON artefacts produced by scripts 01-05 and
@@ -49,7 +49,7 @@ kmeans_scan     = pd.read_csv(ML / "kmeans_scan.csv")
 rf_metrics      = json.loads((ML / "rf_metrics.json").read_text())
 
 print(f"  scores:        {len(scores):,} rows")
-print(f"  quadrants:     {len(quadrants):,} rows (analysed pop. — TrustScore not null)")
+print(f"  quadrants:     {len(quadrants):,} rows (analysed pop., TrustScore not null)")
 print(f"  ray clusters:  {len(ray_clusters):,} rows")
 
 PALETTE = {
@@ -135,7 +135,7 @@ def kpis(devtypes, countries, exp_range, p_only):
 kpi_panel = pn.bind(kpis, devtype_filter, country_filter, exp_filter, paradox_only)
 
 # -----------------------------------------------------------------------------
-# Tab 1 — The Paradox
+# Tab 1, The Paradox
 # -----------------------------------------------------------------------------
 def quadrant_chart(devtypes, countries, exp_range, p_only):
     f = filter_df(quadrants, devtypes, countries, exp_range, p_only)
@@ -175,7 +175,7 @@ def scatter_chart(devtypes, countries, exp_range, p_only):
     fig.add_hline(y=median_trust, line_dash="dash", line_color="black",
                   opacity=0.4, annotation_text=f"median T={median_trust:.1f}")
     fig.update_layout(
-        title="Composite Usage vs Trust  (colour = frustration; sample of 6k)",
+        title="Composite Usage vs Trust  (colour = frustration, sample of 6k)",
         xaxis_title="Usage Score", yaxis_title="Trust Score",
         height=480, margin=dict(t=50, b=40, l=10, r=10),
     )
@@ -212,7 +212,7 @@ paradox_tab = pn.Column(
 )
 
 # -----------------------------------------------------------------------------
-# Tab 2 — Trust Dynamics
+# Tab 2, Trust Dynamics
 # -----------------------------------------------------------------------------
 def trust_by_usage_band(devtypes, countries, exp_range, p_only):
     f = filter_df(quadrants, devtypes, countries, exp_range, p_only).copy()
@@ -315,9 +315,9 @@ trust_tab = pn.Column(
 )
 
 # -----------------------------------------------------------------------------
-# Tab 3 — Machine Learning
+# Tab 3, Machine Learning
 # -----------------------------------------------------------------------------
-# RF feature-importance — fixed (it's about the trained model, not filters)
+# RF feature-importance, fixed (it's about the trained model, not filters)
 fi_sorted = rf_imp.sort_values("Importance", ascending=True)
 fig_fi = px.bar(
     fi_sorted, x="Importance", y="Feature", orientation="h",
@@ -331,7 +331,7 @@ fig_fi.update_layout(
 )
 rf_chart = pn.pane.Plotly(fig_fi, sizing_mode="stretch_width")
 
-# K-Means scan plot — k vs inertia & silhouette
+# K-Means scan plot, k vs inertia & silhouette
 fig_scan = go.Figure()
 fig_scan.add_trace(go.Scatter(x=kmeans_scan["k"], y=kmeans_scan["inertia"],
                               mode="lines+markers", name="Inertia (lower = tighter)",
@@ -386,18 +386,18 @@ ml_explainer = pn.pane.Markdown(
     f"""
 ### What's running here
 
-**Random Forest** — *predicts whether a developer is in the paradox group*
+**Random Forest**, *predicts whether a developer is in the paradox group*
 - 3-seed ensemble (seeds 42 / 1337 / 2025), 200 trees each, run in parallel via Ray
 - Predictors: {', '.join(f'`{c}`' for c in rf_metrics['predictors'])}
-- **Trust columns are excluded** (they define the label — keeping them would leak)
+- **Trust columns are excluded** (they define the label, keeping them would leak)
 - Accuracy on held-out 20 % test set: **{rf_metrics['accuracy']:.1%}**
 - Train / test sizes: {rf_metrics['n_train']:,} / {rf_metrics['n_test']:,}
-- Median split used for the label — Usage = {rf_metrics['median_usage']:.1f}, Trust = {rf_metrics['median_trust']:.1f}
+- Median split used for the label, Usage = {rf_metrics['median_usage']:.1f}, Trust = {rf_metrics['median_trust']:.1f}
 
-**K-Means** — *unsupervised segmentation of developers*
-- k swept 2..6 in parallel via Ray; final fit at k = 4
+**K-Means**, *unsupervised segmentation of developers*
+- k swept 2..6 in parallel via Ray. Final fit at k = 4
 - 11 features (the composite scores + their components + experience)
-- Doesn't see the paradox label at all — and yet one of the 4 tribes lines up
+- Doesn't see the paradox label at all, and yet one of the 4 tribes lines up
   with the paradox quadrant, which is independent confirmation that the
   paradox is a real pattern in the data.
 """
@@ -416,7 +416,7 @@ sidebar = pn.Column(
 ---
 ### About
 
-**AI Trust Paradox** — analysing **49,191** developers from the
+**AI Trust Paradox**, analysing **49,191** developers from the
 2025 Stack Overflow Developer Survey.
 
 **Composite scores (0–100)** built from multiple survey columns:
@@ -438,7 +438,7 @@ tabs = pn.Tabs(
 )
 
 dashboard = pn.template.FastListTemplate(
-    title="AI Trust Paradox — Phase 2 Dashboard",
+    title="AI Trust Paradox, Phase 2 Dashboard",
     site="CMP_SC-8540 · Big Data & Model Management",
     sidebar=[sidebar],
     main=[kpi_panel, tabs],
