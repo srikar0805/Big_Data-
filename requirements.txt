@@ -1,5 +1,6 @@
 pyspark==3.5.3
-ray[default]==2.40.0
+ray[default]==2.10.0; python_version < "3.9"
+ray[default]==2.40.0; python_version >= "3.9"
 panel>=1.4
 bokeh>=3.0
 pandas
@@ -9,5 +10,8 @@ matplotlib
 plotly
 seaborn
 pyarrow
+requests
+urllib3
+pyOpenSSL
 nbformat
 jupyter

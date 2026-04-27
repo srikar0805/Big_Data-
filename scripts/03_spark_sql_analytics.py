@@ -14,13 +14,10 @@ Reads  : output/cleaned_data/ai_trust_scores
 Writes : output/cleaned_data/ai_trust_quadrants  (parquet)
          output/spark_sql_results/*              (one CSV per query)
 """
-import os
-from pathlib import Path
+from runtime_env import configure_spark_runtime, project_root
 
-os.environ.setdefault("JAVA_HOME", "/usr/lib/jvm/java-17-openjdk-amd64")
-os.environ["PATH"] = os.environ["JAVA_HOME"] + "/bin:" + os.environ.get("PATH", "")
-
-PROJECT_ROOT = Path("/users/sk7dn/big_data/AI_Trust_Paradox_Phase2")
+PROJECT_ROOT = project_root(__file__)
+configure_spark_runtime(PROJECT_ROOT)
 OUTPUT_DIR   = PROJECT_ROOT / "output"
 
 from pyspark.sql import SparkSession

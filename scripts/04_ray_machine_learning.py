@@ -24,13 +24,10 @@ Writes : output/ray_ml_results/{kmeans_scan, ray_cluster_results,
                                 cluster_summary, paradox_feature_importance,
                                 rf_metrics, rf_predictions}
 """
-import os
-from pathlib import Path
+from runtime_env import configure_spark_runtime, project_root
 
-os.environ.setdefault("JAVA_HOME", "/usr/lib/jvm/java-17-openjdk-amd64")
-os.environ["PATH"] = os.environ["JAVA_HOME"] + "/bin:" + os.environ.get("PATH", "")
-
-PROJECT_ROOT = Path("/users/sk7dn/big_data/AI_Trust_Paradox_Phase2")
+PROJECT_ROOT = project_root(__file__)
+configure_spark_runtime(PROJECT_ROOT)
 OUTPUT_DIR   = PROJECT_ROOT / "output"
 
 from pyspark.sql import SparkSession

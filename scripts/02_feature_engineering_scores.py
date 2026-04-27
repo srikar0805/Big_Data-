@@ -20,13 +20,10 @@ train on them as separate features.
 Input  : output/cleaned_data/cleaned_survey_data   (Parquet from script 01)
 Output : output/cleaned_data/ai_trust_scores       (Parquet, 49,191 rows)
 """
-import os
-from pathlib import Path
+from runtime_env import configure_spark_runtime, project_root
 
-os.environ.setdefault("JAVA_HOME", "/usr/lib/jvm/java-17-openjdk-amd64")
-os.environ["PATH"] = os.environ["JAVA_HOME"] + "/bin:" + os.environ.get("PATH", "")
-
-PROJECT_ROOT = Path("/users/sk7dn/big_data/AI_Trust_Paradox_Phase2")
+PROJECT_ROOT = project_root(__file__)
+configure_spark_runtime(PROJECT_ROOT)
 DATA_DIR     = PROJECT_ROOT / "data"
 OUTPUT_DIR   = PROJECT_ROOT / "output"
 print("project root:", PROJECT_ROOT)

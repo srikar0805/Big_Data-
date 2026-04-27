@@ -6,8 +6,8 @@ CMP_SC-8540, Big Data and Model Management, Spring 2026
 Team: Preya Patel, Sai Srikar
 
 [![pipeline](https://img.shields.io/badge/pipeline-5%2F5%20scripts-success)]()
-[![tests](https://img.shields.io/badge/tests-5%2F5%20PASS-success)]()
-[![rf-accuracy](https://img.shields.io/badge/RF%20accuracy-83.6%25-blue)]()
+[![tests](https://img.shields.io/badge/tests-6%2F6%20PASS-success)]()
+[![rf-roc-auc](https://img.shields.io/badge/RF%20ROC--AUC-0.837-blue)]()
 
 ---
 
@@ -22,8 +22,7 @@ respondents, 172 columns), built three **multi-column composite scores**
 to split the population into four trust × usage quadrants, and trained
 Ray-orchestrated clustering and classification models to characterise the
 **AI Trust Paradox** group, developers who use AI heavily yet still
-distrust it. The whole analysis is then exposed via an interactive Panel
-dashboard.
+distrust it. The whole analysis is then exposed via a Panel dashboard.
 
 ---
 
@@ -39,9 +38,11 @@ AI_Trust_Paradox_Phase2/
 │   ├── 02_feature_engineering_scores.py  # composite Usage / Trust / Frustration
 │   ├── 03_spark_sql_analytics.py         # 7 Spark-SQL queries + quadrants
 │   ├── 04_ray_machine_learning.py        # Ray K-Means + Ray RF ensemble
-│   └── 05_visualizations_testing.py      # 9 PNGs + 5 smoke tests
-├── dashboard/                            # Interactive Panel + Plotly app
-│   ├── app.py                            # 3-tab dashboard (sidebar filters)
+│   ├── 05_visualizations_testing.py      # 11 PNGs + 6 smoke tests
+│   ├── 00_verify_distributed_runtime.py  # Spark + Ray local runtime check
+│   └── runtime_env.py                    # Java/Spark localhost setup helper
+├── dashboard/                            # Panel dashboard
+│   ├── app.py                            # 3-tab data-backed dashboard
 │   └── README.md                         # local + Microsoft Fabric run notes
 ├── logs/                                 # stdout/stderr captured per script
 │   └── 0{1..5}_*.log
@@ -49,7 +50,7 @@ AI_Trust_Paradox_Phase2/
 │   ├── cleaned_data/             # parquet (Spark), gitignored, regenerable
 │   ├── spark_sql_results/        # CSVs of every SQL query
 │   ├── ray_ml_results/           # cluster labels + RF importances + metrics
-│   └── visualizations/           # PNGs (9 charts)
+│   └── visualizations/           # PNGs (11 charts)
 ├── report/                       # final PDF report (added later)
 ├── README.md
 ├── requirements.txt
@@ -68,10 +69,10 @@ limit and ODbL-licensed source remains a public download). See
 |---|---|---|
 | Storage / retrieval | Apache Spark 3.5 (Parquet) | scripts 01–05 |
 | Analytics | Spark SQL | script 03 |
-| ML orchestration | Ray 2.40 (single-node `local`) | script 04 |
+| ML orchestration | Ray 2.x (single-node `local`; Python 3.8 uses Ray 2.10) | script 04 |
 | ML algorithms | scikit-learn (`KMeans`, `RandomForestClassifier`) | script 04 |
 | Static plots | matplotlib | script 05 |
-| Interactive dashboard | Panel 1.8 + Plotly | `dashboard/app.py` |
+| Dashboard | Panel 1.8 + Bokeh | `dashboard/app.py` |
 | Tabular display | Tabulator (Panel built-in) | dashboard ML tab |
 
 ---
@@ -85,9 +86,13 @@ python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
 
-# Spark needs JAVA_HOME at JVM start time
+# Spark needs Java at JVM start time. Scripts auto-detect either
+# JAVA_HOME, ./.jdk, ~/.local/jdk-17, or /usr/lib/jvm/java-17-openjdk-amd64.
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
+
+# optional quick proof that Spark and Ray can execute local distributed jobs
+python scripts/00_verify_distributed_runtime.py
 
 # run the pipeline (must be in this order)
 mkdir -p logs
@@ -97,9 +102,10 @@ for s in scripts/0*.py; do
 done
 ```
 
-Each script is self-contained (sets `JAVA_HOME`, opens its own Spark
-session, reads/writes via absolute project-root paths) so they also run
-straight inside Microsoft Fabric, Databricks, or any local Python env.
+Each script is self-contained (configures Java/Spark localhost defaults,
+opens its own Spark session, and resolves paths from the checked-out project
+root) so they also run straight inside Microsoft Fabric, Databricks, or any
+local Python env.
 
 ### Launching the dashboard
 
@@ -138,10 +144,10 @@ output/cleaned_data/ai_trust_scores      (composite UsageScore / TrustScore /
         │      rf_metrics.json, rf_predictions.csv, kmeans_scan.csv}
         │
         ├─▶ script 05 , Visualizations + tests
-        │      output/visualizations/*.png
+        │      output/visualizations/*.png, generated from Spark/Ray outputs
         │
-        └─▶ dashboard/app.py , Interactive Panel + Plotly dashboard
-               sidebar filters · KPI strip · 3 tabs (Paradox / Trust / ML)
+        └─▶ dashboard/app.py , Panel dashboard
+               data-backed KPI strip · Overview · Trust Dynamics · Ray ML Segments
 ```
 
 ---
@@ -217,6 +223,27 @@ answered all three trust questions. Median is used (not mean) for a robust
 | Low Usage – High Trust | 4,795 | 25.7 |
 | **High Usage – Low Trust (paradox)** | **4,312** | **33.1** ← highest |
 
+### Role, experience, and country profile
+
+Role explains trust differences much more clearly than years of experience.
+Among roles with at least 100 developers, **AI app developers** have the
+highest average trust (**66.2**), followed by **AI/ML engineers** (**63.4**).
+The lowest-trust roles are **game/graphics developers** (**40.6**) and
+**embedded developers** (**43.8**).
+
+Experience is almost flat: known-experience groups range only from **52.7**
+to **53.4** average trust, a **0.7-point spread**. Including respondents with
+unknown experience lowers the minimum to **51.3**, but the overall movement is
+still small compared with the role-level differences.
+
+The paradox profile output also supports a country/work-mode view. In the
+profile slices with at least 20 developers, the largest segment is
+**full-stack developers in the United States working remotely** (131),
+followed by **back-end developers in the United States working remotely** (64)
+and **full-stack developers in the United States in hybrid work** (50). By
+country across those profile slices, the United States leads, followed by
+Germany.
+
 | Predictor of paradox membership | Mean RF importance |
 |---|---:|
 | `WorkExpNum` | 22.0 % |
@@ -244,6 +271,20 @@ Two ML models are orchestrated in parallel by Ray (script 04):
 - **Outputs**: `cluster_summary.csv` (centroids), `ray_cluster_results.csv`
   (per-developer cluster IDs), `kmeans_scan.csv` (k-sweep diagnostics).
 
+| Cluster | Segment name | What it means | Developers |
+|---:|---|---|---:|
+| 0 | Power users | High usage (**67.8**) and high trust (**67.4**), broad model/tool use, and relatively low frustration (**24.8**). | 5,287 |
+| 1 | Frustrated adopters | Active AI users with moderate trust (**57.8**) but the highest frustration (**60.4**) and strongest threat concern. | 5,270 |
+| 2 | Regular low-friction users | Largest segment: regular AI use, moderate trust (**57.2**), low frustration (**17.1**), and lighter workflow integration. | 9,571 |
+| 3 | Low-adoption skeptics | Low usage (**16.9**) and lowest trust (**26.1**); AI is not deeply integrated into their work. | 5,186 |
+
+The PCA cluster chart is a **visual projection**, not the model itself. Ray
+K-Means clusters developers in the full 11-feature space; PCA compresses those
+features into two axes so we can inspect whether the learned segments separate
+visibly. Nearby dots are developers with similar standardized usage/trust/tool
+profiles; the PC1/PC2 axes are mixtures of features, not standalone survey
+questions.
+
 ### Random Forest classifier, *"will this developer be in the paradox group?"*
 
 - **Predicts**: 1 (paradox) or 0 (not paradox) for each developer, *supervised*.
@@ -264,17 +305,17 @@ Two ML models are orchestrated in parallel by Ray (script 04):
 `scripts/05_visualizations_testing.py` ships a small smoke-test harness that
 checks:
 
-| # | Test | Latest result |
+| # | Test | Expected condition |
 |---|---|---|
-| T1 | Row count after cleaning | PASS · 49,191 |
-| T2 | All required score columns present | PASS · 0 missing |
-| T3 | Composite scores stay inside [0, 100] | PASS |
-| T4 | Spark-SQL aggregate latency < 30 s | PASS · 0.36 s |
-| T5 | Every expected output artefact exists | PASS · 0 missing |
+| T1 | Row count after cleaning | 49,191 rows, within the expected survey range |
+| T2 | Expected Spark/Ray result columns present | 0 missing required columns |
+| T3 | Composite and aggregate scores stay inside [0, 100] | all score fields bounded |
+| T4 | Role trust ordering matches the data | AI app developers highest; game/graphics lowest |
+| T5 | Known-experience trust range stays under 1 point | confirms experience is nearly flat |
+| T6 | Every expected output artefact exists | all 11 visualisation PNGs present |
 
-It prints a PASS/FAIL line per test plus a final aggregate. See
-[logs/05_visualizations_testing.log](logs/05_visualizations_testing.log)
-for the latest run.
+It prints a PASS/FAIL line per test plus a final aggregate when run in an
+environment with the Python plotting dependencies installed.
 
 ---
 
@@ -283,18 +324,22 @@ for the latest run.
 After running the pipeline, launch:
 
 ```bash
-panel serve dashboard/app.py --show --autoreload --port 5006
+panel serve dashboard/app.py --address 0.0.0.0 --port 5006 --allow-websocket-origin='*'
 ```
 
-The dashboard exposes:
+In the Fabric Test Bed, the dashboard can also render directly inside a
+Fabric notebook with `dashboard.servable()`. See [dashboard/README.md](dashboard/README.md)
+for both Fabric notebook and standalone Panel/Bokeh options.
+
+The dashboard exposes only charts supported by the available output files:
 
 | | |
 |---|---|
-| **Sidebar filters** | DevType (top-15 multi-select) · Country (top-15) · WorkExp range slider · "show only paradox group" toggle |
-| **KPI strip** | live counts and mean composite scores (re-render under filters) |
-| **Tab 1 · The Paradox** | quadrant bar chart · jittered Usage × Trust scatter with median lines · top paradox-group roles |
-| **Tab 2 · Trust Dynamics** | Trust+Frustration by usage band · scores by experience · top roles by trust · binned heatmap |
-| **Tab 3 · Machine Learning** | RF feature importance · K-Means k-sweep curve · cluster centroids table · clusters in PCA space · plain-English explainer |
+| **KPI strip** | survey responses · analysed developers · high-usage/low-trust count/share · mean composite scores · country/role counts |
+| **Overview** | quadrant sizes · trust/frustration by usage band |
+| **Trust Dynamics** | zoomed trust-by-experience trend · AI usage distribution · highest/lowest role trust |
+| **Ray ML Segments** | cluster explanation cards · PCA cluster projection · baseline-aware RF metrics · RF feature importance · K-Means k-sweep · cluster centroids table · model summary |
+| **Filtered Profile** | optional row-level role/country filters and charts, shown only when regenerated Parquet exists |
 
 For Microsoft Fabric instructions, see
 [dashboard/README.md](dashboard/README.md).

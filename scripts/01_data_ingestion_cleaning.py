@@ -13,12 +13,11 @@
 
 
 import os, sys
-from pathlib import Path
 
-os.environ.setdefault("JAVA_HOME", "/usr/lib/jvm/java-17-openjdk-amd64")
-os.environ["PATH"] = os.environ["JAVA_HOME"] + "/bin:" + os.environ.get("PATH", "")
+from runtime_env import configure_spark_runtime, project_root
 
-PROJECT_ROOT = Path("/users/sk7dn/big_data/AI_Trust_Paradox_Phase2")
+PROJECT_ROOT = project_root(__file__)
+configure_spark_runtime(PROJECT_ROOT)
 DATA_DIR = PROJECT_ROOT / "data"
 OUTPUT_DIR = PROJECT_ROOT / "output"
 print("project root:", PROJECT_ROOT)
@@ -158,4 +157,3 @@ print("partitions written:", len(list(out.glob("part-*.parquet"))))
 
 
 spark.stop()
-
