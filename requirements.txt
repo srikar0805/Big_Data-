@@ -1,5 +1,7 @@
 pyspark==3.5.3
 ray[default]==2.40.0
+panel>=1.4
+bokeh>=3.0
 pandas
 numpy
 scikit-learn

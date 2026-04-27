@@ -34,6 +34,9 @@ AI_Trust_Paradox_Phase2/
 │   ├── 03_spark_sql_analytics.py
 │   ├── 04_ray_machine_learning.py
 │   └── 05_visualizations_testing.py
+├── dashboard/                            # Interactive Panel + Plotly app
+│   ├── app.py
+│   └── README.md
 ├── logs/                                 # stdout/stderr from each run
 │   └── 0{1..5}_*.log
 ├── output/
@@ -89,6 +92,17 @@ done
 Each script is self-contained (sets `JAVA_HOME`, opens its own Spark
 session, reads/writes via absolute project-root paths) so they also run
 straight inside Microsoft Fabric, Databricks, or any local Python env.
+
+### Launching the dashboard
+
+After the pipeline has been run at least once:
+
+```bash
+panel serve dashboard/app.py --show --autoreload --port 5006
+```
+
+See [dashboard/README.md](dashboard/README.md) for filter details and
+Microsoft Fabric instructions.
 
 ---
 
