@@ -350,8 +350,8 @@ For Microsoft Fabric instructions, see
 
 | Member | Owned |
 |---|---|
-| **Preya Patel** | Data preprocessing & cleaning · feature-engineering composites · matplotlib visualisations |
-| **Sai Srikar** | Correlation analysis · Ray ML pipeline · Panel dashboard |
+| **Preya Patel** | Data preprocessing & feature-engineering, Visualisations |
+| **Sai Srikar** | Correlation analysis, Ray ML pipeline, Panel dashboard |
 
 ---
 
